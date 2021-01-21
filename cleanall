@@ -1,0 +1,10 @@
+#!/bin/bash
+set -o errexit
+
+delete_directories_named() {
+  find . -depth -name "$1" -type d -exec rm -rf "{}" \;
+}
+
+delete_directories_named .mypy_cache
+delete_directories_named .pytest_cache
+delete_directories_named __pycache__

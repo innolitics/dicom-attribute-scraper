@@ -1,0 +1,8 @@
+#!/bin/bash
+set -o errexit
+
+python --version 2>&1 | grep -qE "3.7.[0-9]" || { echo "Need Python 3.7.x, have $(python --version)" && exit 1; }
+
+pip install pip-tools==5.4.0
+pip-sync requirements.txt
+pre-commit install
