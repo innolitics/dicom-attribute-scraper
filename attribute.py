@@ -5,6 +5,7 @@ from pydicom.data import get_testdata_file
 
 excludeVRs = ['OB', 'UN', 'SQ', 'OD', 'OF']
 
+
 def mapTagsToValues(fileName, excludeTags, stringLength):
     filePath = get_testdata_file(fileName)
 
@@ -37,10 +38,11 @@ def mapTagsToValues(fileName, excludeTags, stringLength):
 
     return sets
 
-def jsonify(fileName, excludeTags, stringLength):
+
+def createJson(fileName, excludeTags, stringLength):
     set = mapTagsToValues(fileName, excludeTags, stringLength)
-    new_set = json.dumps(set, indent=2)
-    print(new_set)
+    #new_set = json.dumps(set, indent=2)
+    return set
 
 
 if __name__ == '__main__':
@@ -63,4 +65,7 @@ if __name__ == '__main__':
         excludeTags = [str(sys.argv[3])]
 
     # print(get_testdata_file(fileName), "\n")
-    jsonify(fileName, excludeTags, stringLength)
+    output = createJson(fileName, excludeTags, stringLength)
+
+    with open('out.json', 'w') as f:
+        json.dump(output, f, indent=2)
