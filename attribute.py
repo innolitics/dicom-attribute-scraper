@@ -3,69 +3,53 @@ import json
 import sys
 from pydicom.data import get_testdata_file
 
-excludeVRs = ['OB', 'UN', 'SQ', 'OD', 'OF']
+exclude_VRs = ['OB', 'UN', 'SQ', 'OD', 'OF']
 
 
-def mapTagsToValues(fileName, excludeTags, stringLength):
-    filePath = get_testdata_file(fileName)
+def map_tags_to_values(file_name, exclude_tags, string_length):
+    file_path = get_testdata_file(file_name)
 
-    dataset = pydicom.dcmread(filePath)
-    # print(dataset.__len__(), "\n")
+    data_set = pydicom.dcmread(file_path)
 
     pairing = {}
-    nonPairing = {}
+    non_pairing = {}
 
-    for element in dataset:
-        isIncluded = True
-        for tag in excludeTags:
+    for element in data_set:
+        is_included = True
+        for tag in exclude_tags:
             if str(element.tag) == tag:
-                isIncluded = False
+                is_included = False
                 break
-        for VR in excludeVRs:
+        for VR in exclude_VRs:
             if str(element.VR) == VR:
-                isIncluded = False
+                is_included = False
                 break
 
-        if not isIncluded:
-            nonPairing[str(element.tag)] = str(element.value)[0:stringLength]
-        else:
-            pairing[str(element.tag)] = str(element.value)[0:stringLength]
+        if is_included:
+            pairing[str(element.tag)] = str(element.value)[0:string_length]
 
-    sets = [pairing, nonPairing]
-
-    # print(pairing.__len__(), "\n")
-    # print(nonPairing.__len__(), "\n")
-
-    return sets
-
-
-def createJson(fileName, excludeTags, stringLength):
-    set = mapTagsToValues(fileName, excludeTags, stringLength)
-    #new_set = json.dumps(set, indent=2)
-    return set
-
+    return pairing
 
 if __name__ == '__main__':
-    fileName = sys.argv[1]
-    excludeTags = ['(0008, 0008)', '(0008, 0005)', '(0008, 0012)']
-    stringLength = 0
+    file_name = sys.argv[1]
+    exclude_tags = ['(0008, 0008)', '(0008, 0005)', '(0008, 0012)']
+    string_length = 0
 
     try:
         sys.argv[2]
     except:
-        stringLength = 50
+        string_length = 50
     else:
-        stringLength = int(sys.argv[2])
+        string_length = int(sys.argv[2])
 
     try:
         sys.argv[3]
     except:
-        excludeTags = ['(0008, 0008)', '(0008, 0005)', '(0008, 0012)']
+        exclude_tags = ['(0008, 0008)', '(0008, 0005)', '(0008, 0012)']
     else:
-        excludeTags = [str(sys.argv[3])]
+        exclude_tags = [str(sys.argv[3])]
 
-    # print(get_testdata_file(fileName), "\n")
-    output = createJson(fileName, excludeTags, stringLength)
+    output = map_tags_to_values(file_name, exclude_tags, string_length)
 
-    with open('out.json', 'w') as f:
-        json.dump(output, f, indent=2)
+    with open('out.json', 'w') as file:
+        json.dump(output, file, indent=2)
