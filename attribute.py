@@ -1,6 +1,5 @@
 import pydicom
 import json
-import sys
 import argparse
 from pydicom.data import get_testdata_file
 
@@ -29,9 +28,6 @@ def map_tags_to_values(file_name, excluded_tags, string_length):
     return pairing
 
 
-# def defineInputArguments():
-
-
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
@@ -55,33 +51,7 @@ if __name__ == "__main__":
     else:
         excluded_tags = {}
 
-    # file_name = sys.argv[1]
-    #
-    # try:
-    #     sys.argv[2]
-    # except IndexError:
-    #     output_name = "out.json"
-    # else:
-    #     output_name = sys.argv[2]
-    #
-    # try:
-    #     sys.argv[3]
-    # except IndexError:
-    #     string_length = 50
-    # else:
-    #     string_length = int(sys.argv[3])
-    #
-    # try:
-    #     sys.argv[4]
-    # except IndexError:
-    #     excluded_tags = {}
-    # else:
-    #     excluded_tags = {str(sys.argv[4])}
-
     output = map_tags_to_values(file_name, excluded_tags, string_length)
 
     with open(output_name, "w") as file:
         json.dump(output, file, indent=2)
-
-    # output = pydicom.dcmread(get_testdata_file(file_name))
-    # print(output)
