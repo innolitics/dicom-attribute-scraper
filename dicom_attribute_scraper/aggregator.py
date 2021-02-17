@@ -1,22 +1,21 @@
 import json
 import argparse
+from collections import defaultdict
 
 
-def aggregate(files):
-    tag_set = set()
-    mapping = {}
+def aggregate(file_paths):
+    parsed_files = []
 
-    for file in files:
-        for tag in files[file]:
-            if tag not in tag_set:
-                tag_set.add(tag)
+    for path in file_paths:
+        with open(path) as f:
+            parsed_files.append(json.load(f))
 
-    for tag in tag_set:
-        mapping[tag] = []
-        for file in files:
-            if tag in files[file]:
-                mapping[tag].append(files[file][tag])
-    return mapping
+    tag_to_values = defaultdict(list)
+    for file in parsed_files:
+        for tag, value in file.items():
+            tag_to_values[tag].append(value)
+
+    return tag_to_values
 
 
 if __name__ == "__main__":
@@ -26,18 +25,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     file_paths = args.files
-    if args.output:
-        output_name = args.output
-    else:
-        output_name = "output.json"
 
-    files = {}
+    output_name = args.output if args.output else "output.json"
 
-    for path in file_paths:
-        with open(path) as f:
-            files[path] = json.load(f)
-
-    output = aggregate(files)
+    output = aggregate(file_paths)
 
     with open(output_name, "w") as f:
         json.dump(output, f, indent=2)
