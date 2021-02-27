@@ -1,4 +1,3 @@
-import pytest
 from dicom_attribute_scraper.aggregator import aggregate
 
 FILE_1 = "./tests/fixtures/parsed_1.json"
@@ -10,9 +9,6 @@ file_paths = [FILE_1, FILE_2, FILE_3]
 
 def test_tag_aggregation():
     attr = aggregate(file_paths)["(0008, 0070)"]
-    assert (
-        ("GE MEDICAL SYSTEMS" in attr)
-        and ("Philips" in attr)
-        and ("Philips Medical Systems" in attr)
-        and (len(attr) == 3)
+    assert set(attr) == set(
+        ["GE MEDICAL SYSTEMS", "Stanford University", "Philips Medical Systems"]
     )

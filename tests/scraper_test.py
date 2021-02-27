@@ -1,4 +1,3 @@
-import pytest
 from dicom_attribute_scraper.attribute_scraper import map_tags_to_values
 
 FILE_NAME = "./example_dicom_files/egfile3.dcm"
