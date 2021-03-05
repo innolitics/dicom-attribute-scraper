@@ -20,7 +20,7 @@ def map_tags_to_values(file_path, excluded_tags, string_length):
         )
 
         if not is_excluded:
-            pairing[str(element.tag)] = str(element.value)[0:string_length]
+            pairing[str(element.tag).replace(" ", "")] = str(element.value)[0:string_length]
 
     return pairing
 

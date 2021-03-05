@@ -8,7 +8,7 @@ file_paths = [FILE_1, FILE_2, FILE_3]
 
 
 def test_tag_aggregation():
-    attr = aggregate(file_paths)["(0008, 0070)"]
+    attr = aggregate(file_paths)["(0008,0070)"]
     assert set(attr) == set(
         ["GE MEDICAL SYSTEMS", "Stanford University", "Philips Medical Systems"]
     )
