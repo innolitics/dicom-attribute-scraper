@@ -1,0 +1,8 @@
+#!/bin/bash
+
+find dcm_dir -name "*.dcm" -exec python ../dicom_attribute_scraper/attribute_scraper.py {} -o "{}_scraped" \;
+
+find dcm_dir -name "*.dcm_scraped" -exec python ../dicom_attribute_scraper/aggregator.py {} +
+
+find dcm_dir -name "*.dcm_scraped" -exec rm {} \;
+
