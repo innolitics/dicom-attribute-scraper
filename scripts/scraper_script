@@ -1,0 +1,15 @@
+#!/bin/bash
+
+var=0
+
+mkdir tmp_scraper
+
+find $1 -name "*.dcm" | while read fname ; do 
+	python ../dicom_attribute_scraper/attribute_scraper.py "$fname" -o ./tmp_scraper/scraped_dcm_"$var" ;
+	var=$((var+1)) ;
+done ;
+
+find "./tmp_scraper" -name "scraped_dcm_*" -exec python ../dicom_attribute_scraper/aggregator.py '{}' \+
+
+rm -r ./tmp_scraper
+
