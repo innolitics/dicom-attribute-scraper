@@ -12,4 +12,3 @@ done ;
 find "./tmp_scraper" -name "scraped_dcm_*" -exec python ../dicom_attribute_scraper/aggregator.py '{}' \+
 
 rm -r ./tmp_scraper
-

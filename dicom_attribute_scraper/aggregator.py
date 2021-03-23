@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
     file_paths = args.files
 
-    output_name = args.output or "output.json"
+    output_name = args.output or "raw_aggregation.json"
 
     output = aggregate(file_paths)
 
