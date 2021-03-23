@@ -1,3 +1,11 @@
+"""Calculates the percentage of included tags in an aggregated file out of the total possible tags
+
+Input:
+JSON file with aggregated examples for each tag
+
+Output:
+Percentage covered out of total number of tags possible
+"""
 import argparse
 import json
 
