@@ -1,0 +1,24 @@
+#!/bin/bash
+
+var=0
+
+mkdir dir_temp
+
+find $1 -name "*.dcm" | while read filename
+do
+	echo $(dirname $filename) >> directory_list
+done
+
+sort directory_list | uniq >> list_sorted
+
+while IFS= read -r line
+do
+	find $line -name "*.dcm" -exec python ../dicom_attribute_scraper/attribute_scraper.py '{}' -o "dir_temp/scraped_dcm_$var" \; -quit
+	var=$((var+1))
+done < list_sorted
+
+find dir_temp -name "scraped_dcm_*" -exec python ../dicom_attribute_scraper/aggregator.py '{}' \+
+
+rm directory_list
+rm list_sorted
+rm -r dir_temp
