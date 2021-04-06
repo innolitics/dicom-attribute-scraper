@@ -9,10 +9,13 @@ do
 	echo $(dirname $filename) >> directory_list
 done
 
+# Deduplicate list of directories
 sort directory_list | uniq >> list_sorted
 
+# Use IFS= to separate by newlines only, not spaces or other escape characters
 while IFS= read -r line
 do
+	# Use -quit to stop the find command after first file is scraped
 	find $line -name "*.dcm" -exec python ../dicom_attribute_scraper/attribute_scraper.py '{}' -o "dir_temp/scraped_dcm_$var" \; -quit
 	var=$((var+1))
 done < list_sorted
